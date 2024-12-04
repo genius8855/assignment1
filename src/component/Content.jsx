@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceDot } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceDot,
+} from "recharts";
 
 const Content = ({ skillData, onUpdate }) => {
   const [showForm, setShowForm] = useState(false);
@@ -46,7 +54,9 @@ const Content = ({ skillData, onUpdate }) => {
       {/* Skill Test Card */}
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h3 className="text-lg font-bold">Hyper Text Markup Language</h3>
-        <p className="text-sm text-gray-600">Questions: 08 | Duration: 15 mins | Submitted on 5 June 2021</p>
+        <p className="text-sm text-gray-600">
+          Questions: 08 | Duration: 15 mins | Submitted on 5 June 2021
+        </p>
         <button
           onClick={() => setShowForm(true)}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
@@ -55,64 +65,88 @@ const Content = ({ skillData, onUpdate }) => {
         </button>
       </div>
 
-      {/* Update Form */}
+      {/* Update Form Modal */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="mt-4 bg-gray-50 p-6 rounded-lg shadow-md">
-          <label className="block">
-            Rank:
-            <input
-              type="number"
-              value={formData.rank}
-              onChange={(e) =>
-                setFormData({ ...formData, rank: parseInt(e.target.value, 10) || 0 })
-              }
-              className="block w-full mt-1 p-2 border rounded"
-            />
-          </label>
-          <label className="block mt-4">
-            Percentile:
-            <input
-              type="number"
-              value={formData.percentile}
-              onChange={(e) =>
-                handleChange("percentile", parseInt(e.target.value, 10) || 0)
-              }
-              className={`block w-full mt-1 p-2 border rounded ${
-                errors.percentile ? "border-red-500" : ""
-              }`}
-            />
-            {errors.percentile && (
-              <p className="text-red-500 text-sm mt-1">{errors.percentile}</p>
-            )}
-          </label>
-          <label className="block mt-4">
-            Correct Answers:
-            <input
-              type="number"
-              value={formData.correctAnswers}
-              onChange={(e) =>
-                handleChange("correctAnswers", parseInt(e.target.value, 10) || 0)
-              }
-              className={`block w-full mt-1 p-2 border rounded ${
-                errors.correctAnswers ? "border-red-500" : ""
-              }`}
-            />
-            {errors.correctAnswers && (
-              <p className="text-red-500 text-sm mt-1">{errors.correctAnswers}</p>
-            )}
-          </label>
-          <button
-            type="submit"
-            className={`mt-4 px-4 py-2 rounded-lg ${
-              errors.percentile || errors.correctAnswers
-                ? "bg-gray-400 text-white cursor-not-allowed"
-                : "bg-green-600 text-white"
-            }`}
-            disabled={errors.percentile || errors.correctAnswers}
-          >
-            Save
-          </button>
-        </form>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+            <h4 className="text-lg font-bold mb-4">Update Information</h4>
+            <form onSubmit={handleSubmit}>
+              <label className="block">
+                Rank:
+                <input
+                  type="number"
+                  value={formData.rank}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      rank: parseInt(e.target.value, 10) || 0,
+                    })
+                  }
+                  className="block w-full mt-1 p-2 border rounded"
+                />
+              </label>
+              <label className="block mt-4">
+                Percentile:
+                <input
+                  type="number"
+                  value={formData.percentile}
+                  onChange={(e) =>
+                    handleChange("percentile", parseInt(e.target.value, 10) || 0)
+                  }
+                  className={`block w-full mt-1 p-2 border rounded ${
+                    errors.percentile ? "border-red-500" : ""
+                  }`}
+                />
+                {errors.percentile && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.percentile}
+                  </p>
+                )}
+              </label>
+              <label className="block mt-4">
+                Correct Answers:
+                <input
+                  type="number"
+                  value={formData.correctAnswers}
+                  onChange={(e) =>
+                    handleChange(
+                      "correctAnswers",
+                      parseInt(e.target.value, 10) || 0
+                    )
+                  }
+                  className={`block w-full mt-1 p-2 border rounded ${
+                    errors.correctAnswers ? "border-red-500" : ""
+                  }`}
+                />
+                {errors.correctAnswers && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.correctAnswers}
+                  </p>
+                )}
+              </label>
+              <div className="flex justify-end mt-4 space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className={`px-4 py-2 rounded-lg ${
+                    errors.percentile || errors.correctAnswers
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-green-600 text-white"
+                  }`}
+                  disabled={errors.percentile || errors.correctAnswers}
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
 
       {/* Quick Statistics */}
@@ -154,8 +188,9 @@ const Content = ({ skillData, onUpdate }) => {
           </LineChart>
         </ResponsiveContainer>
         <p className="mt-4 text-sm">
-          You scored {skillData.percentile}% percentile, which is lower than the average percentile 72% of all the
-          engineers who took this assessment.
+          You scored {skillData.percentile}% percentile, which is lower than
+          the average percentile 72% of all the engineers who took this
+          assessment.
         </p>
       </div>
     </div>
